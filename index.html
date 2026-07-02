@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route 66 Scavenger Hunt Panel</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            color: #24292f;
+            background-color: #ffffff;
+            line-height: 1.6;
+            padding: 30px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header h1 {
+            font-size: 30px;
+            font-weight: 600;
+            color: #1f2328;
+            border-bottom: 1px solid #d0d7de;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2328;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #57606a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+        ul {
+            margin-top: 0;
+            margin-bottom: 16px;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 14.5px;
+        }
+        .doc-note {
+            font-size: 14px;
+            color: #24292f;
+            background-color: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+        }
+        .section-box {
+            background-color: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .kickoff-box {
+            background-color: #f0f7ff;
+            border: 1px solid #b6dadf;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 32px;
+        }
+        .stop-card {
+            border: 1px solid #d0d7de;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+            background-color: #ffffff;
+        }
+        .stop-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0969da;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        .logistics-block {
+            background-color: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .safety-alert {
+            background-color: #fff8ec;
+            border: 1px solid #f5b041;
+            border-left: 4px solid #d97706;
+            color: #9a3412;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .mission-block {
+            background-color: #faf8f5;
+            border: 1px solid #e1dcd6;
+            border-radius: 6px;
+            padding: 16px;
+        }
+        .msg-container {
+            margin-bottom: 20px;
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        .msg-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #24292f;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .text-preview {
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, monospace;
+            font-size: 13px;
+            color: #24292f;
+            margin: 0 0 10px 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .copy-btn {
+            background-color: #24292f;
+            color: #ffffff;
+            border: 1px solid rgba(27, 31, 36, 0.15);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.2s, color 0.2s;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .copy-btn:hover {
+            background-color: #2f363d;
+        }
+        .task-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        .task-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            font-size: 14.5px;
+        }
+        .task-list li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: #0969da;
+            font-size: 14px;
+        }
+        .answer-key {
+            color: #1a7f37;
+            font-weight: 600;
+            font-family: ui-monospace, SFMono-Regular, monospace;
+            font-size: 13px;
+            margin-left: 4px;
+        }
+        .reconstruction-box, .photo-box {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #e1dcd6;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<main class="container">
+    <header>
+        <h1>Route 66 Scavenger Hunt Panel</h1>
+        <div class="doc-note">
+            <strong>Kayla's Control Deck:</strong> Tap any copy button to immediately load that specific message segment into your clipboard. Paste directly into your chat thread with Matt.
+        </div>
+    </header>
+
+    <section class="section-box">
+        <h2>⏱️ Master Timeline Summary</h2>
+        <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+            <li style="margin-bottom: 8px;"><strong>10:00 AM:</strong> Stop 1 - American Giants Museum (Atlanta)</li>
+            <li style="margin-bottom: 8px;"><strong>10:40 AM:</strong> Stop 2 - World's Largest Covered Wagon (Lincoln)</li>
+            <li style="margin-bottom: 8px;"><strong>11:10 AM:</strong> Stop 3 - Salt Creek Ghost Bridge Hike</li>
+            <li style="margin-bottom: 8px;"><strong>12:25 PM:</strong> Stop 4 - Cozy Dog Drive In (Lunch Break)</li>
+            <li style="margin-bottom: 8px;"><strong>01:35 PM:</strong> Stop 5 - Route 66 Experience & Mahan's Station</li>
+            <li style="margin-bottom: 8px;"><strong>02:20 PM:</strong> Stop 6 - Lincoln Home National Historic Site</li>
+            <li style="margin-bottom: 8px;"><strong>03:10 PM:</strong> Stop 7 - The Lincoln Tomb</li>
+            <li style="margin-bottom: 8px;"><strong>03:55 PM:</strong> Stop 8 - The Lauterbach Giant</li>
+            <li style="margin-bottom: 8px;"><strong>04:30 PM:</strong> Stop 9 - Original Hand-Laid Brick Road (Auburn)</li>
+            <li style="margin-bottom: 0;"><strong>05:00 PM:</strong> Stop 10 - Doc's Just Off 66 Finale (Girard)</li>
+        </ul>
+    </section>
+
+    <section class="section-box">
+        <h2>🚗 Fleet & Roster</h2>
+        <p><strong>Primary Vehicle:</strong> 2021 Ford Mustang Mach-E Select (Space White)</p>
+        <ul style="margin-bottom: 0;">
+            <li><strong>Kayla:</strong> Subspace Comms Operator & Ground Rendezvous Agent (Manages text feed; joins live at select stops. Mom to Arabelle & Bellemy, Aunt to Maverick)</li>
+            <li><strong>Matt:</strong> Trip Navigator & Field Media Officer (Logistics execution, photo logs)</li>
+            <li><strong>Grandpa:</strong> Director of Safety & Hydration (Schedule management, safety parameters)</li>
+            <li><strong>Arabelle (Age 9):</strong> Field Captain (Riddle decryption and text logging)</li>
+            <li><strong>Bellemy (Age 6) & Maverick (Age 5):</strong> Mission Scouts (Visual target validation)</li>
+        </ul>
+    </section>
+
+    <div class="kickoff-box">
+        <h2>🚀 Launch Sequence Initialization</h2>
+        <div class="msg-container" style="border-color: #b6dadf;">
+            <span class="msg-label" style="color: #0969da;">System Welcome Payload</span>
+            <div class="text-preview" id="kickoff-txt">📡 SUBSPACE LINK ACTIVE // TIME ACADEMY 2126
+ALERT: Critical library failure detected. Team Chronos selected for historical timeline patching. Space White Mach-E designated as primary transport. Mission data protocols initialized. Prepare for Coordinate 1 transmission.</div>
+            <button class="copy-btn" onclick="copyEngine('kickoff-txt', this)">Copy Launch Sequence Alert</button>
+        </div>
+    </div>
+
+    <h2>🗺️ Mission Manifest Matrix</h2>
+
+    <!-- STOP 1 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 1: The Plastic Titan Outpost</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> American Giants Museum & Bunyon Giant (Atlanta)</li>
+                <li><strong>Address:</strong> 100 S. Arch St., Atlanta, IL 61723</li>
+                <li><strong>Parking:</strong> Free parallel parking along Arch Street or municipal lot across tracks.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Active railroad tracks run parallel to Arch Street. Keep scouts completely contained to the sidewalk or museum lawn area.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s1m1">Coordinate 1 reached: The Plastic Titan Outpost! Active transport rails run parallel to this sector. Keep the scouts strictly on the sidewalk or grass area. Scouts, verify the 5 physical records on your logs to patch the data vault!</div>
+                <button class="copy-btn" onclick="copyEngine('s1m1', this)">Copy Step 1 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s1m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Color of the giant's boots?
+2. Letter on the vintage Texaco station sign?
+3. Color of the outdoor museum picnic tables?
+4. Parallel tracks check: Railroad tracks or car highway?
+5. Name of the gas station directly across the street?</div>
+                <button class="copy-btn" onclick="copyEngine('s1m2', this)">Copy Step 1 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s1m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"Before modern traffic lights existed, travelers crossing through Atlanta were guided by a vintage, bell-ringing traffic machine known as the Atlanta ________ ________."</div>
+                <button class="copy-btn" onclick="copyEngine('s1m3', this)">Copy Step 1 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s1m4">📸 BIOMETRIC CONFIRMATION LINK:
+A photo of the scouts at the giant's boots holding a massive, imaginary hot dog to confirm arrival. Transmit photo to unlock Coordinate 2!</div>
+                <button class="copy-btn" onclick="copyEngine('s1m4', this)">Copy Step 1 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Boots: <span class="answer-key">[Black]</span></li>
+                <li>Sign: <span class="answer-key">[T]</span></li>
+                <li>Tables: <span class="answer-key">[Green]</span></li>
+                <li>Tracks: <span class="answer-key">[Railroad tracks]</span></li>
+                <li>Gas Brand: <span class="answer-key">[Casey's]</span></li>
+                <li>Arabelle: <span class="answer-key">[Signal Bell]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 2 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 2: Mega-Vessel Railsplitter</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> World's Largest Covered Wagon (Lincoln)</li>
+                <li><strong>Address:</strong> 1750 5th St., Lincoln, IL 62656</li>
+                <li><strong>Parking:</strong> Gravel parking lot on site.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Unbound loose gravel parking area. Enforce a strict zero-climbing policy on the wagon structure.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s2m1">Coordinate 02 // LINCOLN
+SYSTEM FEED: Mega-Vessel Railsplitter ahead. Loose gravel terrain. Enforce absolute zero-climbing protocols. Analyze the artifact and confirm your 5 structural records!</div>
+                <button class="copy-btn" onclick="copyEngine('s2m1', this)">Copy Step 2 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s2m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Material of the giant log next to the wagon?
+2. Growth type in the patch right next to the gravel?
+3. Total number of massive wooden wagon wheels?
+4. Object the giant wagon driver is holding and reading?
+5. Primary color of the gravel ground in the parking lot?</div>
+                <button class="copy-btn" onclick="copyEngine('s2m2', this)">Copy Step 2 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s2m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"On a wooden post right next to the wagon, a heavy iron box is locked up tight to protect local secrets for a very long time; this object is a historic ________ ________."</div>
+                <button class="copy-btn" onclick="copyEngine('s2m3', this)">Copy Step 2 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s2m4">📸 BIOMETRIC CONFIRMATION LINK:
+A dynamic low-angle photo standing right next to one of the massive wheels to verify presence. Transmit photo to unlock Coordinate 3!</div>
+                <button class="copy-btn" onclick="copyEngine('s2m4', this)">Copy Step 2 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Log: <span class="answer-key">[Wood]</span></li>
+                <li>Growth: <span class="answer-key">[Grass / Weeds]</span></li>
+                <li>Wheels: <span class="answer-key">[4]</span></li>
+                <li>Driver: <span class="answer-key">[A big book]</span></li>
+                <li>Gravel: <span class="answer-key">[Grey / Brown]</span></li>
+                <li>Arabelle: <span class="answer-key">[Time Capsule]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 3 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 3: The Salt Creek Phantasm Chasm</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li><strong>Location:</strong> Salt Creek Ghost Bridge Trail Hike</li>
+                <li><strong>Address:</strong> Cobblestone Ave / Broadwell Dr, Lincoln, IL 62656</li>
+                <li><strong>Parking:</strong> Road ends at wooden barricade. Secure vehicle on unpaved shoulder.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Trail ends at an abrupt drop-off over the creek bed. Keep scouts within close arm's reach. Target range pops nearby are normal. Check for ticks after walk.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s3m1">COORDINATE 03 // GHOST BRIDGE
+SYSTEM FEED: Phantasm Chasm hike. Concrete roadbed terminates at drop-off. Keep scouts close. Disregard range acoustic pops. Confirm the environmental assets!</div>
+                <button class="copy-btn" onclick="copyEngine('s3m1', this)">Copy Step 3 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s3m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Item growing directly out of old pavement cracks?
+2. Color of the metal safety railings on the trail?
+3. Type of barrier blocking the end of the driving road?
+4. Pavement texture profile description?
+5. General color of the thick forest canopy leaves?</div>
+                <button class="copy-btn" onclick="copyEngine('s3m2', this)">Copy Step 3 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s3m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"The historical path running under this abandoned bridge is a weed-covered, winding Illinois waterway known as ________ ________."</div>
+                <button class="copy-btn" onclick="copyEngine('s3m3', this)">Copy Step 3 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s3m4">📸 BIOMETRIC CONFIRMATION LINK:
+Line up the crew safely where the pavement drops off and capture them waving down the invisible ghost highway. Transmit photo to unlock Coordinate 4!</div>
+                <button class="copy-btn" onclick="copyEngine('s3m4', this)">Copy Step 3 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Crack: <span class="answer-key">[Weeds / Grass]</span></li>
+                <li>Railing: <span class="answer-key">[Turquoise / Light Green]</span></li>
+                <li>Barrier: <span class="answer-key">[Wooden Barricade]</span></li>
+                <li>Texture: <span class="answer-key">[Rough / Bumpy Concrete]</span></li>
+                <li>Leaves: <span class="answer-key">[Green]</span></li>
+                <li>Arabelle: <span class="answer-key">[Salt Creek]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 4 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 4: The Golden Fusion Batter-Pod</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> Cozy Dog Drive In (Lunch Refuel)</li>
+                <li><strong>Address:</strong> 2935 S. 6th St., Springfield, IL 62703</li>
+                <li><strong>Parking:</strong> Highly congested, tight paved lot.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Active dynamic parking environment. Hold hands tightly across the lot. Utilize interior runtime for an air-conditioned reset and complete restroom breaks.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s4m1">COORDINATE 04 // REFUEL STATION
+SYSTEM FEED: Mid-point anchor achieved. Mandatory thermal cooling and refueling break. High congestion parking zone. Scan the interior archives for your fuel cell metrics!</div>
+                <button class="copy-btn" onclick="copyEngine('s4m1', this)">Copy Step 4 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s4m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Route number printed on the main shield wall graphic: Route ______
+2. Construction material of the food basket container?
+3. Color of the tabletop condiment bottle option?
+4. Category of objects inside the historical glass display cases?
+5. Color scheme of the tiny vintage toy police cruiser?</div>
+                <button class="copy-btn" onclick="copyEngine('s4m2', this)">Copy Step 4 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s4m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"Look up at the main neon sign to verify the restaurant logo, which features two delicious, fried corn dogs happily ________ each other."</div>
+                <button class="copy-btn" onclick="copyEngine('s4m3', this)">Copy Step 4 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s4m4">📸 BIOMETRIC CONFIRMATION LINK:
+A shot of the crew mid-bite of an authentic Cozy Dog to verify dynamic refueling. Transmit photo to unlock Coordinate 5!</div>
+                <button class="copy-btn" onclick="copyEngine('s4m4', this)">Copy Step 4 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Route: <span class="answer-key">[66]</span></li>
+                <li>Basket: <span class="answer-key">[Paper / Cardboard]</span></li>
+                <li>Bottle: <span class="answer-key">[Yellow]</span></li>
+                <li>Display: <span class="answer-key">[Toy Cars]</span></li>
+                <li>Car Color: <span class="answer-key">[Black and White]</span></li>
+                <li>Arabelle: <span class="answer-key">[Hugging]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 5 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 5: The Kaiju Holo-Grid</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> Route 66 Experience & Mahan's Filling Station</li>
+                <li><strong>Address:</strong> Fairgrounds Gate 2 Plaza, 801 E. Sangamon Ave., Springfield, IL 62702</li>
+                <li><strong>Parking:</strong> Paved parking lot directly inside State Fairgrounds Gate 2.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Exposed concrete plaza with zero overhead canopy protection. High ambient heat profile. Grandpa to monitor water levels and reapply sun shielding.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s5m1">COORDINATE 05 // FAIRGROUNDS
+SYSTEM FEED: Severe solar thermal wave detected. Zero local overhead shade canopy. Deploy maximum hydration shields immediately! Verify the historical assets to calibrate the grid.</div>
+                <button class="copy-btn" onclick="copyEngine('s5m1', this)">Copy Step 5 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s5m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Material of the transparent cylinder on the old fuel pump?
+2. Roof contour of the old filling station cabin: Flat or Curved?
+3. Outdoor resting furniture type deployed across the plaza?
+4. Large structure built for viewing drive-in projections?
+5. Initial character code matching our location state on the ground map?</div>
+                <button class="copy-btn" onclick="copyEngine('s5m2', this)">Copy Step 5 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s5m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"Standing proud on the massive drive-in movie screen is a legendary, giant green movie monster known as ________."</div>
+                <button class="copy-btn" onclick="copyEngine('s5m3', this)">Copy Step 5 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s5m4">📸 BIOMETRIC CONFIRMATION LINK:
+Scout Maverick must execute a definitive superhero combat stance directly in front of the Godzilla display grid. Transmit photo to unlock Coordinate 6!</div>
+                <button class="copy-btn" onclick="copyEngine('s5m4', this)">Copy Step 5 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Pump: <span class="answer-key">[Glass]</span></li>
+                <li>Roof: <span class="answer-key">[Curved]</span></li>
+                <li>Furniture: <span class="answer-key">[Benches]</span></li>
+                <li>Screen: <span class="answer-key">[Drive-In Screen]</span></li>
+                <li>State Code: <span class="answer-key">[I (Illinois)]</span></li>
+                <li>Arabelle: <span class="answer-key">[Godzilla]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 6 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 6: Chrono-Anchor 1860</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> Lincoln Home National Historic Site</li>
+                <li><strong>Address:</strong> 426 S. 7th St., Springfield, IL 62701</li>
+                <li><strong>Parking:</strong> Main Visitor Center lot or metered spots along the perimeter loop.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Traditional historic boardwalk terrain contains uneven plank levels. Watch for trip vectors. Visitor Center contains standard public restrooms.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s6m1">COORDINATE 06 // HISTORIC CORE
+SYSTEM FEED: Accessing Chrono-Anchor 1860. Footing hazards on wooden boardwalk planks. Establish non-smiling records to bypass the local firewall!</div>
+                <button class="copy-btn" onclick="copyEngine('s6m1', this)">Copy Step 6 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s6m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Primary exterior siding color of the historic home?
+2. Color of the window accent shutters mounted outside?
+3. Material composition of the rooftop chimneys?
+4. Walkway surface composition instead of regular concrete?
+5. Large shade-producing flora type standing by the walk: A giant ______</div>
+                <button class="copy-btn" onclick="copyEngine('s6m2', this)">Copy Step 6 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s6m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"Before modern cars filled the streets, citizens tied their horses to a tall wooden post equipped with a heavy iron ring, known as a ________ ________."</div>
+                <button class="copy-btn" onclick="copyEngine('s6m3', this)">Copy Step 6 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s6m4">📸 BIOMETRIC CONFIRMATION LINK:
+A group photo on the boardwalk using strict flat expressions with zero smiles to simulate standard 1860 photo limitations. Transmit photo to unlock Coordinate 7!</div>
+                <button class="copy-btn" onclick="copyEngine('s6m4', this)">Copy Step 6 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Siding: <span class="answer-key">[Light Tan / Beige]</span></li>
+                <li>Shutters: <span class="answer-key">[Dark Green]</span></li>
+                <li>Chimneys: <span class="answer-key">[Red Brick]</span></li>
+                <li>Walkway: <span class="answer-key">[Wood Planks]</span></li>
+                <li>Flora: <span class="answer-key">[Tree]</span></li>
+                <li>Arabelle: <span class="answer-key">[Hitching Post]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 7 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 7: The Bronze Spire Vault</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> The Lincoln Tomb / Oak Ridge Cemetery</li>
+                <li><strong>Address:</strong> 1500 Monument Ave., Springfield, IL 62702</li>
+                <li><strong>Parking:</strong> Circular parking lane right at the base of the primary monument tower.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Active historic memorial layout. Maintain a quiet tone. Keep all scouts strictly off the concrete steps and ledge infrastructure.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s7m1">COORDINATE 07 // TOMB MONUMENT
+SYSTEM FEED: Entering Coordinate 7: The Bronze Spire Vault. Maintain silent audio profiles. Keep all boots and footwear entirely off stone steps and ledges.</div>
+                <button class="copy-btn" onclick="copyEngine('s7m1', this)">Copy Step 7 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s7m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Animal type mounted by the bronze trooper statue nearby: A ______
+2. Color profile of the heavy entry security gate and door set?
+3. Directional axis of the central stone monument spire?
+4. Type of massive historical field artillery piece resting on the grass?
+5. Specific facial zone on the external bronze bust that glows golden?</div>
+                <button class="copy-btn" onclick="copyEngine('s7m2', this)">Copy Step 7 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s7m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"The historical military statue guarding the artillery cannon is holding a long, sharp cavalry blade known as a ________."</div>
+                <button class="copy-btn" onclick="copyEngine('s7m3', this)">Copy Step 7 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s7m4">📸 BIOMETRIC CONFIRMATION LINK:
+A close-up verification image showing the scouts establishing direct manual interface with the reflective bronze nose. Transmit photo to unlock Coordinate 8!</div>
+                <button class="copy-btn" onclick="copyEngine('s7m4', this)">Copy Step 7 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Trooper Animal: <span class="answer-key">[Horse]</span></li>
+                <li>Gate/Doors: <span class="answer-key">[Green (Bronze Patina)]</span></li>
+                <li>Spire Axis: <span class="answer-key">[Straight Up]</span></li>
+                <li>Artillery: <span class="answer-key">[Cannon]</span></li>
+                <li>Bust Zone: <span class="answer-key">[The Nose]</span></li>
+                <li>Arabelle: <span class="answer-key">[Sword / Sabre]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 8 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 8: Sector Wabash Flag-Automaton</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> The Lauterbach Giant</li>
+                <li><strong>Address:</strong> 1569 Wabash Ave, Springfield, IL 62704</li>
+                <li><strong>Parking:</strong> On-site operational customer lot at the auto repair business.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Active commercial mechanic workshop environment. Watch carefully for dynamic service traffic. Keep the field window short and remain near the vehicle platform.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s8m1">COORDINATE 08 // SERVICE DEPOT
+SYSTEM FEED: Timeline sync at 70 percent. Active commercial mechanic workshop environment. Watch carefully for dynamic service traffic and stay right near the vehicle platform.</div>
+                <button class="copy-btn" onclick="copyEngine('s8m1', this)">Copy Step 8 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s8m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Massive national textile symbol clutched in the giant's grip?
+2. Automotive parts stacked externally along the open service bays?
+3. Total count of functional overhead mechanical roll-up bay doors?
+4. Accent color of the eyewear resting directly on the giant's face?
+5. Status confirmation: Is the Space White Mach-E locked and secure? Yes or No?</div>
+                <button class="copy-btn" onclick="copyEngine('s8m2', this)">Copy Step 8 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s8m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"By reading the embroidered text patch on the giant's work uniform, we can verify the official name of this historic auto business is ________."</div>
+                <button class="copy-btn" onclick="copyEngine('s8m3', this)">Copy Step 8 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s8m4">📸 BIOMETRIC CONFIRMATION LINK:
+Line up the crew in a single rank and capture a synchronized hand salute facing the primary flag graphic. Transmit photo to unlock Coordinate 9!</div>
+                <button class="copy-btn" onclick="copyEngine('s8m4', this)">Copy Step 8 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Symbol: <span class="answer-key">[The American Flag]</span></li>
+                <li>Parts Stacked: <span class="answer-key">[Tires]</span></li>
+                <li>Bay Doors: <span class="answer-key">[3]</span></li>
+                <li>Eyewear: <span class="answer-key">[Yellow]</span></li>
+                <li>Mach-E Check: <span class="answer-key">[Yes]</span></li>
+                <li>Arabelle: <span class="answer-key">[Lauterbach]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 9 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 9: The Crimson Gridway 1926</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> Original Hand-Laid Brick Road (Auburn)</li>
+                <li><strong>Address:</strong> Snell Road (immediately off IL-4), Auburn, IL 62615</li>
+                <li><strong>Parking:</strong> Pull completely onto the grass or gravel road shoulder margin.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: High-variance irregular brick topography creates clear inversion trip dangers. Track steps carefully. Conduct an immediate check for ticks if scouts pass into high field grass.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s9m1">COORDINATE 09 // BRICK SECTOR
+SYSTEM FEED: Final approach vector initialized. Irregular brick topography detected. Check for parasitic grass vectors (ticks) upon egress from foliage zones.</div>
+                <button class="copy-btn" onclick="copyEngine('s9m1', this)">Copy Step 9 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s9m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Primary color profile of the hand-placed road blocks?
+2. Material profile of the shoulder buffer right next to the bricks?
+3. Height classification of the unmanaged perimeter vegetation: Short or Tall?
+4. Category of vintage transport vehicle drawn on the historic marker sign?
+5. Color metric of a wild flower or weed found along the dirt track margin?</div>
+                <button class="copy-btn" onclick="copyEngine('s9m2', this)">Copy Step 9 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s9m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"By reading the numbers on the vintage car sign, we can verify that workers hand-constructed this original bumpy highway in the year ________."</div>
+                <button class="copy-btn" onclick="copyEngine('s9m3', this)">Copy Step 9 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s9m4">📸 BIOMETRIC CONFIRMATION LINK:
+A top-down vertical alignment image showing everyone's shoes placed directly onto the historic red bricks. Transmit photo to unlock the final coordinate!</div>
+                <button class="copy-btn" onclick="copyEngine('s9m4', this)">Copy Step 9 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Color Profile: <span class="answer-key">[Red]</span></li>
+                <li>Buffer Material: <span class="answer-key">[Gravel / Dirt]</span></li>
+                <li>Vegetation: <span class="answer-key">[Tall]</span></li>
+                <li>Vehicle Class: <span class="answer-key">[Old-fashioned car]</span></li>
+                <li>Flower Metric: <span class="answer-key">[Yellow]</span></li>
+                <li>Arabelle: <span class="answer-key">[1926]</span></li>
+            </ul>
+        </section>
+    </article>
+
+    <!-- STOP 10 -->
+    <article class="stop-card">
+        <header>
+            <h2 class="stop-header">📍 Stop 10: The Omega Fountain Extraction Point</h2>
+        </header>
+        
+        <section class="logistics-block">
+            <h3>📋 Adult Logistics</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Location:</strong> Doc's Just Off 66 (Girard)</li>
+                <li><strong>Address:</strong> 133 S. 2nd St., Girard, IL 62640</li>
+                <li><strong>Parking:</strong> Free open street spaces around the main historic town square layout.</li>
+            </ul>
+            <div class="safety-alert" role="alert">⚠️ SAFETY DIRECTIVE: Authentic 1920s interior fountain structure utilizing tall rotating barstools. Arrive precisely at 5:00 PM to beat the weekend dinner rush.</div>
+        </section>
+
+        <section class="mission-block">
+            <h3>💬 Raw Transmission Streams</h3>
+            
+            <div class="msg-container">
+                <span class="msg-label">Message 1 (The Narrative)</span>
+                <div class="text-preview" id="s10m1">COORDINATE 10 // FINALE EXTRACTION
+SYSTEM FEED: TIMELINE SYNC 100 PERCENT COMPLETE. Final extraction point reached! Secure counter barstool anchors. Intercept ceremonial time-reboot potions and upload the final data packet.</div>
+                <button class="copy-btn" onclick="copyEngine('s10m1', this)">Copy Step 10 Message 1</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 2 (The Scout Directives)</span>
+                <div class="text-preview" id="s10m2">🔍 SCANNER PROTOCOL - SCOUT TASKS:
+1. Material composition of the extended dessert spoons?
+2. Type of tall retro counter seating furniture deployed?
+3. Style of the drinking straws provided: Solid color or Striped?
+4. Material class of the main vessel holding your cold confection treat: A glass ______
+5. Status confirmation: Are Matt and Grandpa verified as smiling? Yes or No?</div>
+                <button class="copy-btn" onclick="copyEngine('s10m2', this)">Copy Step 10 Message 2</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 3 (Arabelle's Fill-In)</span>
+                <div class="text-preview" id="s10m3">👧 CAPTAIN ARABELLE LOG RECONSTRUCTION:
+"Doc's originally opened way back in 1929, serving the local neighborhood as an authentic community ________ and soda fountain."</div>
+                <button class="copy-btn" onclick="copyEngine('s10m3', this)">Copy Step 10 Message 3</button>
+            </div>
+
+            <div class="msg-container">
+                <span class="msg-label">Message 4 (The Photo Assignment)</span>
+                <div class="text-preview" id="s10m4">📸 BIOMETRIC CONFIRMATION LINK:
+A dynamic final action shot of the complete team clinking their dessert glasses, floats, or spoons together across the counter surface. Upload to permanently save the future!</div>
+                <button class="copy-btn" onclick="copyEngine('s10m4', this)">Copy Step 10 Message 4</button>
+            </div>
+
+            <h3 style="margin-top: 24px;">🔑 Reference Key (Answers)</h3>
+            <ul class="task-list">
+                <li>Spoons: <span class="answer-key">[Metal]</span></li>
+                <li>Seating: <span class="answer-key">[Barstools]</span></li>
+                <li>Straws: <span class="answer-key">[Striped / Multi-colored]</span></li>
+                <li>Vessel: <span class="answer-key">[Mug / Dish / Cup]</span></li>
+                <li>Smile Sync: <span class="answer-key">[Yes]</span></li>
+                <li>Arabelle: <span class="answer-key">[Pharmacy / Drugstore]</span></li>
+            </ul>
+        </section>
+    </article>
+</main>
+
+<script>
+    function copyEngine(elementId, btnElement) {
+        const textToCopy = document.getElementById(elementId).innerText.trim();
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                triggerSuccessState(btnElement);
+            }).catch(err => {
+                console.error("Primary clipboard integration failure: ", err);
+                fallbackCopyEngine(textToCopy, btnElement);
+            });
+        } else {
+            fallbackCopyEngine(textToCopy, btnElement);
+        }
+    }
+
+    function fallbackCopyEngine(text, btnElement) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            triggerSuccessState(btnElement);
+        } catch (err) {
+            console.error("Critical sandbox context write error: ", err);
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function triggerSuccessState(btn) {
+        const originalLabel = btn.innerText;
+        btn.innerText = "Copied!";
+        btn.style.backgroundColor = "#1a7f37";
+        btn.style.borderColor = "#1a7f37";
+        
+        setTimeout(() => {
+            btn.innerText = originalLabel;
+            btn.style.backgroundColor = "";
+            btn.style.borderColor = "";
+        }, 1800);
+    }
+</script>
+
+</body>
+</html>
